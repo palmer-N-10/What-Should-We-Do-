@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/result.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+    crossorigin="anonymous">
+    <title>The Popsicle Jar: User Account</title>
+</head>
+<body>
+    <div class="container p-3">
+
+        <!-- Nav Bar -->
+        <div class="col d-flex justify-content-evenly align-items-end">
+            <a href="/dashboard" class="btn btn-outline-success btn-sm">Dashboard</a>
+            <h1 class="display-1">The Popsicle Jar</h1>
+            <a href="/logout" class="btn btn-outline-danger btn-sm">Logout</a>
+        </div>
+        <hr>
+        <!-- End Nav Bar -->
+
+        <!-- Main Body -->
+        <div id="main-content" class="row justify-content-between">
+            
+            <!-- Top Row -->
+            <div id="user-col" class="row">
+                <div class="row">
+                                                                    <!-- Jinja url_for + stored avatar number -->
+                    <img src="{{ url_for('static', filename='imgs/avatars/avatar_{{ user.avatar_num }}.png') }}" alt="user avatar" class="img-fluid pl-3 pt-3">
+                    <h3 class="pl-3 pt-3 text-center">What's <em>hap'nin</em>, {{ session['user_name'] }}?</h3>
+                </div>
+            </div>
+            <!-- End Top Row -->
+
+            <!-- Main Row Content -->
+            <div class="row">
+
+                <!-- Events -->
+                <div id="user-events" class="col-9">
+                    {% if events %}
+                        <h1 class="text-center">Your upcoming events</h1>
+                        <table class="table table-sm table-borderless border border-dark rounded w-auto my-auto mx-auto">
+                            <tbody>
+                                {% for event in events %}
+                                <tr>
+                                    <th><a href="/events/{{ event.id }}">{{ event.name }}</a></th>
+                                </tr>
+                                <tr>
+                                    <td>When: {{ event.when }}</td>
+                                    <td>Attending: {{ event_count }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ event.description }}</td>
+                                </tr>
+                                {% if event != events[-1] %}
+                                <tr>
+                                    <td><hr></td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </div>
+                <!-- End Events -->
+
+                <!-- Relationships -->
+                <div id="relationships" class="col-3">
+                    <h1 class="text-center">Your relationships</h1>
+                    <table class="table table-sm table-borderless border border-dark rounded w-auto my-auto mx-auto">
+                        <tbody>
+                            <!-- Conditionally show if there's a significant other -->
+                            {% if user.sig_other %}
+                            <tr>
+                                <th>Your Someone Special</th>
+                                <td><a href="/users/{{ user.sig_other_id }}" class="btn btn-outline-danger btn-sm">{{ user.sig_other }}</a></td>
+                            </tr>
+                            {% endif %}
+
+                            <!-- Conditionally show friends and how many to show (20 max) -->
+                            {% if friends %}
+                                <tr>
+                                    <th>Your Awesome Friends</th>
+                                </tr>
+                                {% if friend_count > 20 %}
+                                    {% for ind in range(20) %}
+                                    <tr>
+                                        <td><a href="/users/{{ friends[ind].friend_id }}" class="btn btn-outline-success btn-sm">{{ friends[ind].name }}</a></td>
+                                    </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    {% for friend in friends %}
+                                    <tr>
+                                        <td><a href="/users/{{ friend.id }}" class="btn btn-outline-success btn-sm">{{ friend.name }}</a></td>
+                                    </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endif %}
+
+                            <!-- Conditionally show groups and how many to show (4 max) -->
+                            {% if groups %}
+                                <tr>
+                                    <th>Your Swanky Groups</th>
+                                </tr>
+                                {% if group_count > 4 %}
+                                    {% for ind in range(4) %}
+                                    <tr>
+                                        <td><a href="/groups/{{ groups[ind].id }}" class="btn btn-outline-info btn-sm">{{ groups[ind].name }}</a></td>
+                                    </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    {% for group in groups %}
+                                    <tr>
+                                        <td><a href="/groups/{{ group.id }}" class="btn btn-outline-info btn-sm">{{ group.name }}</a></td>
+                                    </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- End Relationships -->
+
+            </div>
+            <!-- End Main Row Content -->
+
+        </div>
+        <!-- End Main Body -->
+
+    </div>
+</body>
+</html>

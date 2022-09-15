@@ -1,0 +1,76 @@
+            <!-- Left Column -->
+            <div id="left-col" class="col">
+                {% with messages = get_flashed_messages(category_filter=["register"]) %}    <!-- declare a variable called messages -->
+                    {% if messages %}                     <!-- check if there are any messages -->
+                        <div class="bg-danger border border-2 p-3 col-8 mx-auto my-5">
+                            {% for message in messages %}         <!-- loop through the messages -->
+                                <p>{{message}}</p>          <!-- display each message in a paragraph tag -->
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                <form action="/register/create" method="POST" class="p-3 col-8 mx-auto my-5 bg-dark text-light">
+                    <h1 class="text-primary">Register</h1>
+                    <div class="form-group">
+                        <label for="first_name">Last Name:</label>
+                        <input type="text" class="form-control mb-2" id="first_name" name="first_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name:</label>
+                        <input type="text" class="form-control mb-2" id="last_name" name="last_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control mb-2" id="email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control mb-2" id="password" name="password">
+                    </div>
+                    <div class="form-group">
+                        <label for="password-confirm">Confirm Password:</label>
+                        <input type="password" class="form-control mb-2" id="password-confirm" name="password-confirm">
+                    </div>
+                    <input type="submit" class="shadow btn border btn-default bg-primary text-light" value="Submit">
+                </form>
+            </div>
+
+            <!-- EDIT USER PROFILE -->
+                <!-- THIS AREA IS CONDITIONAL: -->
+                <!-- SHOW FORMATTED PROFILE vs SHOW EDIT FORM -->
+                <!-- readonly ATTRRIBUTE FOR FORMS -->
+                {% with messages = get_flashed_messages(category_filter=["update"]) %}    <!-- declare a variable called messages -->
+                    {% if messages %}                     <!-- check if there are any messages -->
+                        <div class="bg-danger border border-2 p-3 col-8 mx-auto my-5">
+                            {% for message in messages %}         <!-- loop through the messages -->
+                                <p>{{message}}</p>          <!-- display each message in a paragraph tag -->
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            <form action="" method="POST" class="p-3 col-8 mx-auto my-5 bg-dark text-light">
+                <!-- <h1 class="text-primary">Update User</h1> -->
+                <div class="form-group">
+                    <label for="first_name">First Name:</label>
+                    <input type="text" class="form-control mb-2" id="first_name" name="first_name"
+                    value="{{ user.first_name }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" class="form-control mb-2" id="last_name" name="last_name"
+                    value="{{ user.last_name }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control mb-2" id="email" name="email"
+                    value="{{ user.email }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="Age">Age:</label>
+                    <input type="number" class="form-control mb-2" id="age" name="age"
+                    value="{{ user.age }}" readonly>
+                </div>
+                <!-- <input type="hidden" name="id" value="{{session['user_id']}}"> -->
+                <!-- <input type="submit" class="shadow btn border btn-default bg-primary text-light disabled" value="Update"> -->
+            </form>
+        </div>
